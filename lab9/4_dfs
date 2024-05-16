@@ -1,0 +1,29 @@
+def dfs_algorithm():
+    global tr_size, clients, orders, n
+    stack = [(0, 0, set())]  # Используем стек для отслеживания текущего состояния: (i, curr_capacity, served_clients)
+    flights = []  # Список для хранения информации о рейсах
+
+    while stack:
+        i, curr_capacity, served_clients = stack.pop()
+
+        if i < n:
+            if curr_capacity + orders[i] <= tr_size:
+                stack.append((i + 1, curr_capacity + orders[i], served_clients | {clients[i]}))
+            stack.append((i + 1, curr_capacity, served_clients))
+        else:
+            dict_cl = {j: client_order[j] for j in served_clients}
+            flights.append(dict_cl)
+
+    for idx, served_clients in enumerate(flights, start=1):
+        print(f"Flight {idx}: served clients: {served_clients}")
+
+
+from random import randint
+n = int(input("Введите количество клиентов: "))
+tr_size = int(input("Введите размер транспорта: "))
+
+client_order = {'клиент_' + str(i): randint(1, 100) for i in range(n)}
+client_order = dict(sorted(client_order.items(), key=lambda item: item[1]))  # сортировка словаря по значениям
+clients = list(client_order.keys())
+orders = list(client_order.values())
+dfs_algorithm()
