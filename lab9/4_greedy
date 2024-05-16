@@ -19,10 +19,10 @@ def greedy_algorithm():
 
 
 from random import randint
-n = int(input("input clients count: "))
-tr_size = int(input("input transport size: "))
+n = int(input("Введите количесво клиентов: "))
+tr_size = int(input("Введите размер траспорта: "))
 
-client_order = {'client_' + str(i) : randint(1, 100) for i in range(n)}
+client_order = {'клиент_' + str(i) : randint(1, 100) for i in range(n)}
 client_order = dict(sorted(client_order.items(), key=lambda item: item[1])) # сортировка словаря по значениям
 clients = list(client_order.keys())
 orders = list(client_order.values())
