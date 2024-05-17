@@ -1,0 +1,53 @@
+import math
+
+def distance(point1, point2):
+    return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
+
+def closest_pair(points):
+    points_sorted_by_x = sorted(points, key=lambda point: point[0])
+    points_sorted_by_y = sorted(points, key=lambda point: point[1])
+
+    min_dist = float('inf')
+    best_pair = None
+
+    strip = []
+    left_ptr = 0
+
+    for point in points_sorted_by_x:
+        while point[0] - points_sorted_by_x[left_ptr][0] > min_dist:
+            strip.remove(points_sorted_by_x[left_ptr])
+            left_ptr += 1
+
+        new_strip = [p for p in strip if abs(p[1] - point[1]) < min_dist]
+
+        for strip_point in new_strip:
+            d = distance(point, strip_point)
+            if d < min_dist:
+                min_dist = d
+                best_pair = (point, strip_point)
+
+        strip.append(point)
+
+    return best_pair, min_dist
+
+if __name__ == "__main__":
+    points = []
+    print("Введите координаты точек (формат: x y). Введите 'stop' для завершения ввода.")
+
+    while True:
+        user_input = input("Введите координаты точки: ")
+
+        if user_input.lower() == 'stop':
+            break
+
+        try:
+            x, y = map(float, user_input.split())
+            points.append((x, y))
+        except ValueError:
+            print("Неверный формат ввода. Пожалуйста, введите координаты в формате 'x y'.")
+
+    if len(points) < 2:
+        print("Недостаточно точек для вычисления.")
+    else:
+        closest_points, closest_distance = closest_pair(points)
+        print(f"Ближайшая пара точек: {closest_points} с расстоянием {closest_distance:.4f}")
