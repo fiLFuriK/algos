@@ -1,26 +1,26 @@
 import heapq
 
-def shortest_path_with_restrictions(graph, start, end, max_restricted_uses):
-    pq = [(0, start, max_restricted_uses)]
+def shortest_path_with_restrictions(graph, start, end, iskl):
+    pq = [(0, start, iskl)]
     distances = {}
-    distances[(start, max_restricted_uses)] = 0
+    distances[(start, iskl)] = 0
 
     while pq:
-        current_dist, current_vertex, remaining_restricted_uses = heapq.heappop(pq)
+        current_dist, current_top, lim_iskl = heapq.heappop(pq) 
 
-        if current_vertex == end:
+        if current_top == end:
             return current_dist
 
-        if current_dist > distances.get((current_vertex, remaining_restricted_uses), float('inf')):
+        if current_dist > distances.get((current_top, lim_iskl), float('inf')):
             continue
 
-        for neighbor, weight, is_restricted in graph[current_vertex]:
-            if is_restricted and remaining_restricted_uses > 0:
+        for neighbor, weight, is_iskl in graph[current_top]:
+            if is_iskl and lim_iskl > 0:
+                new_dist = current_dist + weight 
+                new_state = (neighbor, lim_iskl - 1)
+            elif not is_iskl:
                 new_dist = current_dist + weight
-                new_state = (neighbor, remaining_restricted_uses - 1)
-            elif not is_restricted:
-                new_dist = current_dist + weight
-                new_state = (neighbor, remaining_restricted_uses)
+                new_state = (neighbor, lim_iskl)
             else:
                 continue
 
