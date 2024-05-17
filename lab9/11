@@ -37,7 +37,7 @@ graph = {
     "D": [("B", 6, True), ("C", 1, False)]
 }
 
-# Тестируем функции с разными входными данными
+
 print("Обработка результатов с ограничением:", min_path_with_iskl(graph, 'A', 'D', 1))
 print("Обработка результатов без ограничений:", min_path_with_iskl(graph, 'A', 'D', 0))
 print("Прямой путь с ограничениями:", min_path_with_iskl(graph, 'A', 'C', 1))
