@@ -1,0 +1,44 @@
+import heapq
+
+def shortest_path_with_restrictions(graph, start, end, max_restricted_uses):
+    pq = [(0, start, max_restricted_uses)]
+    distances = {}
+    distances[(start, max_restricted_uses)] = 0
+
+    while pq:
+        current_dist, current_vertex, remaining_restricted_uses = heapq.heappop(pq)
+
+        if current_vertex == end:
+            return current_dist
+
+        if current_dist > distances.get((current_vertex, remaining_restricted_uses), float('inf')):
+            continue
+
+        for neighbor, weight, is_restricted in graph[current_vertex]:
+            if is_restricted and remaining_restricted_uses > 0:
+                new_dist = current_dist + weight
+                new_state = (neighbor, remaining_restricted_uses - 1)
+            elif not is_restricted:
+                new_dist = current_dist + weight
+                new_state = (neighbor, remaining_restricted_uses)
+            else:
+                continue
+
+            if new_dist < distances.get(new_state, float('inf')):
+                distances[new_state] = new_dist
+                heapq.heappush(pq, (new_dist, neighbor, new_state[1]))
+
+    return None
+
+graph = {
+    "A": [("B", 2, False), ("C", 4, True)],
+    "B": [("A", 1, False), ("C", 2, False), ("D", 5, True)],
+    "C": [("A", 3, True), ("B", 2, False), ("D", 1, False)],
+    "D": [("B", 6, True), ("C", 1, False)]
+}
+
+# Тестируем функции с разными входными данными
+print("Обработка результатов с ограничением:", shortest_path_with_restrictions(graph, 'A', 'D', 1))
+print("Обработка результатов без ограничений:", shortest_path_with_restrictions(graph, 'A', 'D', 0))
+print("Прямой путь с ограничениями:", shortest_path_with_restrictions(graph, 'A', 'C', 1))
+print("Прямой путь без ограничений:", shortest_path_with_restrictions(graph, 'A', 'C', 0))  
