@@ -34,11 +34,12 @@ graph = {
     "A": [("B", 2, False), ("C", 4, True)],
     "B": [("A", 1, False), ("C", 2, False), ("D", 5, True)],
     "C": [("A", 3, True), ("B", 2, False), ("D", 1, False)],
-    "D": [("B", 6, True), ("C", 1, False)]
+    "D": [("B", 6, True), ("C", 1, False)],
+    "E": [("C", 3, True), ("D", 7, True)]
 }
 
-
+# Тестируем функции с разными входными данными
 print("Обработка результатов с ограничением:", min_path_with_iskl(graph, 'A', 'D', 1))
 print("Обработка результатов без ограничений:", min_path_with_iskl(graph, 'A', 'D', 0))
 print("Прямой путь с ограничениями:", min_path_with_iskl(graph, 'A', 'C', 1))
-print("Прямой путь без ограничений:", min_path_with_iskl(graph, 'A', 'C', 0))  
+print("Прямой путь без ограничений:", min_path_with_iskl(graph, 'A', 'C', 0))
