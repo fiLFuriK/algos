@@ -1,12 +1,12 @@
 import heapq
 
-def shortest_path_with_restrictions(graph, start, end, iskl):
+def min_path_with_iskl(graph, start, end, iskl):
     pq = [(0, start, iskl)]
     distances = {}
     distances[(start, iskl)] = 0
 
     while pq:
-        current_dist, current_top, lim_iskl = heapq.heappop(pq) 
+        current_dist, current_top, lim_iskl = heapq.heappop(pq)
 
         if current_top == end:
             return current_dist
@@ -16,7 +16,7 @@ def shortest_path_with_restrictions(graph, start, end, iskl):
 
         for neighbor, weight, is_iskl in graph[current_top]:
             if is_iskl and lim_iskl > 0:
-                new_dist = current_dist + weight 
+                new_dist = current_dist + weight
                 new_state = (neighbor, lim_iskl - 1)
             elif not is_iskl:
                 new_dist = current_dist + weight
@@ -38,7 +38,7 @@ graph = {
 }
 
 # Тестируем функции с разными входными данными
-print("Обработка результатов с ограничением:", shortest_path_with_restrictions(graph, 'A', 'D', 1))
-print("Обработка результатов без ограничений:", shortest_path_with_restrictions(graph, 'A', 'D', 0))
-print("Прямой путь с ограничениями:", shortest_path_with_restrictions(graph, 'A', 'C', 1))
-print("Прямой путь без ограничений:", shortest_path_with_restrictions(graph, 'A', 'C', 0))  
+print("Обработка результатов с ограничением:", min_path_with_iskl(graph, 'A', 'D', 1))
+print("Обработка результатов без ограничений:", min_path_with_iskl(graph, 'A', 'D', 0))
+print("Прямой путь с ограничениями:", min_path_with_iskl(graph, 'A', 'C', 1))
+print("Прямой путь без ограничений:", min_path_with_iskl(graph, 'A', 'C', 0))  
